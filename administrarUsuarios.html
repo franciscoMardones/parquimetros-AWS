@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Administrar Usuarios</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="administrarUsuarios.html">Administrar Usuarios</a>
+                        <!-- Enlace a la página de administración de usuarios -->
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    <div class="container mt-5">
+        <h1 class="text-center">Administrar Usuarios</h1>
+
+        <!-- Botón para desplegar el formulario de agregar administrador -->
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+            <button class="btn btn-primary" id="btn-mostrar-formulario">Agregar Usuario Administrador</button>
+        </div>
+
+        <!-- Formulario para agregar administrador -->
+        <form id="form-agregar-admin" style="display: none;" class="mt-4">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="contraseña" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Administrador</button>
+        </form>
+
+        <!-- Botón para desplegar el formulario de eliminar administrador -->
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+            <button class="btn btn-danger" id="btn-mostrar-eliminar-formulario">Eliminar Usuario Administrador</button>
+        </div>
+
+        <!-- Formulario para eliminar administrador -->
+        <form id="form-eliminar-admin" style="display: none;" class="mt-4">
+            <div class="mb-3">
+                <label for="email-eliminar" class="form-label">Correo Electrónico del Administrador a Eliminar</label>
+                <input type="email" class="form-control" id="email-eliminar" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Eliminar Administrador</button>
+        </form>
+
+        <!-- Botón para desplegar el formulario de buscar usuario -->
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+            <button class="btn btn-info" id="btn-mostrar-buscar-formulario">Buscar Usuario</button>
+        </div>
+
+        <!-- Formulario para buscar usuario -->
+        <form id="form-buscar-usuario" style="display: none;" class="mt-4">
+            <div class="mb-3">
+                <label for="email-buscar" class="form-label">Correo Electrónico del Usuario a Buscar</label>
+                <input type="email" class="form-control" id="email-buscar" required>
+            </div>
+            <button type="submit" class="btn btn-info">Buscar Usuario</button>
+        </form>
+
+        <!-- Resultado de la búsqueda -->
+        <div id="resultado-busqueda" class="mt-4 text-center"></div>
+
+        <!-- Botón para desplegar el formulario de actualizar usuario administrador -->
+        <div class="d-grid gap-2 col-6 mx-auto mt-4">
+            <button class="btn btn-warning" id="btn-mostrar-actualizar-formulario">Actualizar Usuario Administrador</button>
+        </div>
+
+        <!-- Formulario para actualizar usuario administrador -->
+        <form id="form-actualizar-admin" style="display: none;" class="mt-4">
+            <div class="mb-3">
+                <label for="email-actualizar" class="form-label">Correo Electrónico del Administrador a Actualizar</label>
+                <input type="email" class="form-control" id="email-actualizar" required>
+            </div>
+            <div class="mb-3">
+                <label for="nuevo-nombre" class="form-label">Nuevo Nombre</label>
+                <input type="text" class="form-control" id="nuevo-nombre">
+            </div>
+            <div class="mb-3">
+                <label for="nueva-contraseña" class="form-label">Nueva Contraseña</label>
+                <input type="password" class="form-control" id="nueva-contraseña">
+            </div>
+            <button type="submit" class="btn btn-warning">Actualizar Administrador</button>
+        </form>
+
+        <!-- Mensaje de éxito o error -->
+        <div id="mensaje" class="mt-4 text-center"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script para manejar el despliegue del formulario y enviar los datos -->
+    <script>
+        // Mostrar/ocultar el formulario de agregar administrador
+        document.getElementById('btn-mostrar-formulario').addEventListener('click', () => {
+            const formulario = document.getElementById('form-agregar-admin');
+            formulario.style.display = (formulario.style.display === 'none' || formulario.style.display === '') ? 'block' : 'none';
+        });
+
+        // Mostrar/ocultar el formulario de eliminar administrador
+        document.getElementById('btn-mostrar-eliminar-formulario').addEventListener('click', () => {
+            const formularioEliminar = document.getElementById('form-eliminar-admin');
+            formularioEliminar.style.display = (formularioEliminar.style.display === 'none' || formularioEliminar.style.display === '') ? 'block' : 'none';
+        });
+
+        // Mostrar/ocultar el formulario de buscar usuario
+        document.getElementById('btn-mostrar-buscar-formulario').addEventListener('click', () => {
+            const formularioBuscar = document.getElementById('form-buscar-usuario');
+            formularioBuscar.style.display = (formularioBuscar.style.display === 'none' || formularioBuscar.style.display === '') ? 'block' : 'none';
+        });
+
+        // Mostrar/ocultar el formulario de actualizar administrador
+        document.getElementById('btn-mostrar-actualizar-formulario').addEventListener('click', () => {
+            const formularioActualizar = document.getElementById('form-actualizar-admin');
+            formularioActualizar.style.display = (formularioActualizar.style.display === 'none' || formularioActualizar.style.display === '') ? 'block' : 'none';
+        });
+
+        // Manejar el envío del formulario para agregar administrador
+        document.getElementById('form-agregar-admin').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const contraseña = document.getElementById('contraseña').value;
+
+            try {
+                const response = await fetch('http://localhost:3001/crear-admin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        email: email,
+                        contraseña: contraseña
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('mensaje').innerText = data.message;
+
+                if (response.ok) {
+                    document.getElementById('form-agregar-admin').reset();
+                }
+            } catch (error) {
+                document.getElementById('mensaje').innerText = 'Error al crear administrador';
+            }
+        });
+
+        // Manejar el envío del formulario para eliminar administrador
+        document.getElementById('form-eliminar-admin').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email-eliminar').value;
+
+            try {
+                const response = await fetch('http://localhost:3001/eliminar-admin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+                document.getElementById('mensaje').innerText = data.message;
+
+                if (response.ok) {
+                    document.getElementById('form-eliminar-admin').reset();
+                }
+            } catch (error) {
+                document.getElementById('mensaje').innerText = 'Error al eliminar administrador';
+            }
+        });
+
+        // Manejar el envío del formulario para actualizar administrador
+        document.getElementById('form-actualizar-admin').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email-actualizar').value;
+            const nuevoNombre = document.getElementById('nuevo-nombre').value;
+            const nuevaContraseña = document.getElementById('nueva-contraseña').value;
+
+            try {
+                const response = await fetch('http://localhost:3001/actualizar-admin', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        nombre: nuevoNombre,
+                        contraseña: nuevaContraseña
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('mensaje').innerText = data.message;
+
+                if (response.ok) {
+                    document.getElementById('form-actualizar-admin').reset();
+                }
+            } catch (error) {
+                document.getElementById('mensaje').innerText = 'Error al actualizar administrador';
+            }
+        });
+
+        // Manejar el envío del formulario para buscar usuario
+        document.getElementById('form-buscar-usuario').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email-buscar').value;
+
+            try {
+                const response = await fetch('http://localhost:3001/buscar-usuario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('resultado-busqueda').innerText = `Usuario encontrado: ${data.nombre}`;
+                } else {
+                    document.getElementById('resultado-busqueda').innerText = data.message;
+                }
+            } catch (error) {
+                document.getElementById('resultado-busqueda').innerText = 'Error al buscar el usuario';
+            }
+        });
+    </script>
+</body>
+</html>
